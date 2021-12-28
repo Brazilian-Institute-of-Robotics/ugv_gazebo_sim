@@ -254,13 +254,6 @@
       <origin xyz="0.04 -0.06 0" rpy="0 0 0"/>
     </joint>
 
-    <link name="depth_stereo_camera_link" />
-    <joint name="depth_stereo_camera_joint" type="fixed">
-      <parent link="stereo_camera_link" />
-      <child link="depth_stereo_camera_link" />
-      <origin xyz="0.04 0 0" rpy="0 0 0"/>
-    </joint>  
-
     <!-- Camera stereo image plugin -->
     <gazebo reference="left_stereo_camera_link">
       <sensor type="multicamera" name="stereo_camera">
@@ -324,15 +317,33 @@
       </sensor>
     </gazebo>
 
-    <!-- Depth camera image plugin -->
+    <!-- depth camera link e joint  -->
+    <link name="depth_stereo_camera_link"/>
+    <joint name="depth_stereo_camera_joint" type="fixed">
+      <parent link="stereo_camera_link" />
+      <child link="depth_stereo_camera_link" />
+      <origin xyz="0.04 0 0" rpy="0 0 0"/>
+    </joint>  
+
+    <!-- depth camera optical frame -->
+    <link name="depth_stereo_camera_optical_link"/>
+    <joint name="depth_stereo_camera_optical_joint" type="fixed">
+      <parent link="depth_stereo_camera_link" />
+      <child link="depth_stereo_camera_optical_link" />
+      <origin xyz="0 0 0" rpy="1.57 3.14 1.57"/>      
+    </joint>
+
+    <!-- Depth camera image plugin 1 -->  
     <gazebo reference="depth_stereo_camera_link">
       <sensor name="depth_camera" type="depth">
         <update_rate>20</update_rate>
         <camera>
           <horizontal_fov>1.3962634</horizontal_fov>
           <image>
-            <width>800</width>
-            <height>800</height>
+            <!-- <width>800</width>
+            <height>800</height> -->
+            <width>640</width>
+            <height>480</height>
             <format>R8G8B8</format>
           </image>
           <clip>
@@ -348,7 +359,7 @@
           <depthImageTopicName>depth/image_raw</depthImageTopicName>
           <depthImageInfoTopicName>depth/camera_info</depthImageInfoTopicName>
           <pointCloudTopicName>depth/points</pointCloudTopicName>
-          <frameName>depth_stereo_camera_link</frameName>
+          <frameName>depth_stereo_camera_optical_link</frameName>
           <pointCloudCutoff>0.5</pointCloudCutoff>
           <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
           <distortionK1>0.00000001</distortionK1>
@@ -363,7 +374,7 @@
           <hackBaseline>0</hackBaseline>
         </plugin>
       </sensor>
-    </gazebo>    
+    </gazebo>  
 
     <!-- GPSSSSS -->
     <link name="gps_link" />
@@ -373,18 +384,18 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint> 
 
-    <!-- <gazebo>
-        <plugin name="novatel_gps_sim" filename="libhector_gazebo_ros_gps.so">
+    <gazebo>
+      <plugin name="novatel_gps_sim" filename="libhector_gazebo_ros_gps.so">
         <alwaysOn>1</alwaysOn>
         <updateRate>10.0</updateRate>
         <bodyName>base_link</bodyName>
-        <topicName>fix</topicName>
-        <velocityTopicName>fix_velocity</velocityTopicName>
+        <topicName>gps</topicName>
+        <velocityTopicName>gps_velocity</velocityTopicName>
         <drift>5.0 5.0 5.0</drift>
-        <gaussianNoise>0.1 0.1 0.1</gaussianNoise>
+        <gaussianNoise>0.1 0.1 0.1</gaussianNoise> 
         <velocityDrift>0 0 0</velocityDrift>
         <velocityGaussianNoise>0.1 0.1 0.1</velocityGaussianNoise>
-        </plugin>
-    </gazebo> -->
+      </plugin>
+    </gazebo>
 
 </robot>
