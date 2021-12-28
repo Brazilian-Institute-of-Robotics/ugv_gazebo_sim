@@ -105,8 +105,15 @@
     <!-- Gazebo definitions  -->
     <xacro:include filename="$(find scout_description)/urdf/scout_v2.gazebo" />
 
-    <!-- IMU e sensores -->
-    <!-- IMUUUU -->
+    <!-- SENSORS AND INCLUDES ================================================ -->
+
+    <!-- SUBOT VLP16 INCLUDE -->
+    <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+    <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+        <origin xyz="0 0 0.2" rpy="0 0 0" />
+    </xacro:VLP-16>
+
+    <!-- SUBOT IMU frame-->
     <link name="imu_link"/>   
     <joint name="imu_joint" type="fixed">
         <parent link="base_link"/>
@@ -122,6 +129,7 @@
         <material>Gazebo/Grey</material>
     </gazebo> -->
 
+    <!-- SUBOT IMU PLUGIN -->
     <gazebo>
         <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
         <alwaysOn>true</alwaysOn>
@@ -151,14 +159,8 @@
         </plugin>
     </gazebo>
 
-    <!-- VLP1666666 -->
-    <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
-    <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
-        <origin xyz="0 0 0.2" rpy="0 0 0" />
-    </xacro:VLP-16>
-
-    <!-- CAMERAAAAAAA -->
-    <link name="camera_link"/>   
+    <!-- SUBOT RGB CAMERA (DISABLE) -->
+    <!-- <link name="camera_link"/>   
     <joint name="camera_joint" type="fixed">
         <parent link="base_link"/>
         <child link="camera_link"/>
@@ -197,9 +199,9 @@
                 <distortionT2>0.0</distortionT2>
             </plugin>
         </sensor>
-    </gazebo>   
+    </gazebo>    -->
 
-    <!-- STEREO CAMERAAAAAAA -->
+    <!-- SUBOT STEREO CAMERA -->
     <link name="stereo_camera_link">
       <inertial>
         <origin
@@ -254,7 +256,7 @@
       <origin xyz="0.04 -0.06 0" rpy="0 0 0"/>
     </joint>
 
-    <!-- Camera stereo image plugin -->
+    <!-- SUBOT STEREO CAMERA image plugin -->
     <gazebo reference="left_stereo_camera_link">
       <sensor type="multicamera" name="stereo_camera">
         <update_rate>30.0</update_rate>
@@ -317,7 +319,7 @@
       </sensor>
     </gazebo>
 
-    <!-- depth camera link e joint  -->
+    <!-- SUBOT DEPTH CAMERA link and joint  -->
     <link name="depth_stereo_camera_link"/>
     <joint name="depth_stereo_camera_joint" type="fixed">
       <parent link="stereo_camera_link" />
@@ -325,7 +327,7 @@
       <origin xyz="0.04 0 0" rpy="0 0 0"/>
     </joint>  
 
-    <!-- depth camera optical frame -->
+    <!-- SUBOT DEPTH CAMERA optical frame -->
     <link name="depth_stereo_camera_optical_link"/>
     <joint name="depth_stereo_camera_optical_joint" type="fixed">
       <parent link="depth_stereo_camera_link" />
@@ -333,7 +335,7 @@
       <origin xyz="0 0 0" rpy="1.57 3.14 1.57"/>      
     </joint>
 
-    <!-- Depth camera image plugin 1 -->  
+    <!-- SUBOT DEPTH CAMERA image plugin -->  
     <gazebo reference="depth_stereo_camera_link">
       <sensor name="depth_camera" type="depth">
         <update_rate>20</update_rate>
@@ -376,7 +378,7 @@
       </sensor>
     </gazebo>  
 
-    <!-- GPSSSSS -->
+    <!-- SUBOT GPS -->
     <link name="gps_link" />
     <joint name="gps_joint" type="fixed">
         <parent link="base_link" />
@@ -398,4 +400,17 @@
       </plugin>
     </gazebo>
 
+    <!-- SUBOT ODOMETRY -->
+    <gazebo>
+      <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>50.0</updateRate>
+        <bodyName>base_link</bodyName>
+        <topicName>odom</topicName>
+        <gaussianNoise>0.01</gaussianNoise>
+        <frameName>world</frameName>
+        <xyzOffsets>0 0 0</xyzOffsets>
+        <rpyOffsets>0 0 0</rpyOffsets>
+      </plugin>
+    </gazebo>
 </robot>
