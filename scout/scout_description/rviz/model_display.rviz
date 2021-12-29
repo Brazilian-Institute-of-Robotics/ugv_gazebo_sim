@@ -69,15 +69,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        camera_link:
+        depth_camera_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        depth_stereo_camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        depth_stereo_camera_optical_link:
+        depth_camera_optical_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -149,11 +145,9 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
-        camera_link:
+        depth_camera_link:
           Value: true
-        depth_stereo_camera_link:
-          Value: true
-        depth_stereo_camera_optical_link:
+        depth_camera_optical_link:
           Value: true
         front_left_wheel_link:
           Value: true
@@ -187,8 +181,6 @@ Visualization Manager:
       Show Names: false
       Tree:
         base_link:
-          camera_link:
-            {}
           front_left_wheel_link:
             {}
           front_right_wheel_link:
@@ -204,8 +196,8 @@ Visualization Manager:
           rear_right_wheel_link:
             {}
           stereo_camera_link:
-            depth_stereo_camera_link:
-              depth_stereo_camera_optical_link:
+            depth_camera_link:
+              depth_camera_optical_link:
                 {}
             left_stereo_camera_link:
               {}
@@ -223,11 +215,9 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
-        camera_link:
+        depth_camera_link:
           Value: true
-        depth_stereo_camera_link:
-          Value: true
-        depth_stereo_camera_optical_link:
+        depth_camera_optical_link:
           Value: true
         front_left_wheel_link:
           Value: true
@@ -261,8 +251,6 @@ Visualization Manager:
       Show Names: true
       Tree:
         base_link:
-          camera_link:
-            {}
           front_left_wheel_link:
             {}
           front_right_wheel_link:
@@ -278,8 +266,8 @@ Visualization Manager:
           rear_right_wheel_link:
             {}
           stereo_camera_link:
-            depth_stereo_camera_link:
-              depth_stereo_camera_optical_link:
+            depth_camera_link:
+              depth_camera_optical_link:
                 {}
             left_stereo_camera_link:
               {}
@@ -307,7 +295,7 @@ Visualization Manager:
       Color Transformer: RGB8
       Color Transport Hint: raw
       Decay Time: 0
-      Depth Map Topic: /depth_camera_ir/depth/image_raw
+      Depth Map Topic: /depth_camera/depth/image_raw
       Depth Map Transport Hint: raw
       Enabled: true
       Invert Rainbow: false
@@ -356,7 +344,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /depth_camera_ir/image_raw
+      Image Topic: /depth_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -463,7 +451,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.280076503753662
+      Distance: 5.383113861083984
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -479,9 +467,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.27979716658592224
+      Pitch: 0.3697970509529114
       Target Frame: <Fixed Frame>
-      Yaw: 2.2058029174804688
+      Yaw: 2.1208057403564453
     Saved: ~
 Window Geometry:
   Depth image raw:

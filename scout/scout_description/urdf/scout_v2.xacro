@@ -106,14 +106,21 @@
     <xacro:include filename="$(find scout_description)/urdf/scout_v2.gazebo" />
 
     <!-- SENSORS AND INCLUDES ================================================ -->
+    <!-- SUBOT WORLD -->
+    <!-- <link name="world" />
+    <joint name="world_to_base_link=" type="planar">
+        <origin xyz="0 0 0.1" rpy="0 0 0" />
+        <parent link="world"/>
+        <child link="base_link"/>
+    </joint> -->
 
-    <!-- SUBOT VLP16 INCLUDE -->
+    <!-- SUBOT VLP16 include -->
     <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
     <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
         <origin xyz="0 0 0.2" rpy="0 0 0" />
     </xacro:VLP-16>
 
-    <!-- SUBOT IMU frame-->
+    <!-- SUBOT IMU frame and joint -->
     <link name="imu_link"/>   
     <joint name="imu_joint" type="fixed">
         <parent link="base_link"/>
@@ -129,7 +136,7 @@
         <material>Gazebo/Grey</material>
     </gazebo> -->
 
-    <!-- SUBOT IMU PLUGIN -->
+    <!-- SUBOT IMU plugin -->
     <gazebo>
         <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
         <alwaysOn>true</alwaysOn>
@@ -201,7 +208,7 @@
         </sensor>
     </gazebo>    -->
 
-    <!-- SUBOT STEREO CAMERA -->
+    <!-- SUBOT STEREO CAMERA  frames and joints -->
     <link name="stereo_camera_link">
       <inertial>
         <origin
@@ -320,23 +327,23 @@
     </gazebo>
 
     <!-- SUBOT DEPTH CAMERA link and joint  -->
-    <link name="depth_stereo_camera_link"/>
-    <joint name="depth_stereo_camera_joint" type="fixed">
+    <link name="depth_camera_link"/>
+    <joint name="depth_camera_joint" type="fixed">
       <parent link="stereo_camera_link" />
-      <child link="depth_stereo_camera_link" />
+      <child link="depth_camera_link" />
       <origin xyz="0.04 0 0" rpy="0 0 0"/>
     </joint>  
 
     <!-- SUBOT DEPTH CAMERA optical frame -->
-    <link name="depth_stereo_camera_optical_link"/>
-    <joint name="depth_stereo_camera_optical_joint" type="fixed">
-      <parent link="depth_stereo_camera_link" />
-      <child link="depth_stereo_camera_optical_link" />
+    <link name="depth_camera_optical_link"/>
+    <joint name="depth_camera_optical_joint" type="fixed">
+      <parent link="depth_camera_link" />
+      <child link="depth_camera_optical_link" />
       <origin xyz="0 0 0" rpy="1.57 3.14 1.57"/>      
     </joint>
 
     <!-- SUBOT DEPTH CAMERA image plugin -->  
-    <gazebo reference="depth_stereo_camera_link">
+    <gazebo reference="depth_camera_link">
       <sensor name="depth_camera" type="depth">
         <update_rate>20</update_rate>
         <camera>
@@ -353,15 +360,15 @@
             <far>3</far>
           </clip>
         </camera>
-        <plugin name="depth_stereo_camera_controller" filename="libgazebo_ros_openni_kinect.so">
+        <plugin name="depth_camera_controller" filename="libgazebo_ros_openni_kinect.so">
           <baseline>0.2</baseline>
           <alwaysOn>true</alwaysOn>
           <updateRate>1.0</updateRate>
-          <cameraName>depth_camera_ir</cameraName>
+          <cameraName>depth_camera</cameraName>
           <depthImageTopicName>depth/image_raw</depthImageTopicName>
           <depthImageInfoTopicName>depth/camera_info</depthImageInfoTopicName>
           <pointCloudTopicName>depth/points</pointCloudTopicName>
-          <frameName>depth_stereo_camera_optical_link</frameName>
+          <frameName>depth_camera_optical_link</frameName>
           <pointCloudCutoff>0.5</pointCloudCutoff>
           <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
           <distortionK1>0.00000001</distortionK1>
