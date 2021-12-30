@@ -226,7 +226,7 @@
       </inertial>
 
       <visual>
-        <origin xyz="0.0 0.0 0.0" rpy="1.57 0.0 1.57"/>
+        <origin xyz="0.0 0.0 0.0" rpy="${M_PI/2} 0.0 ${M_PI/2}"/>
         <geometry>
           <mesh filename="package://scout_description/meshes/double-camera-mynt1.STL"/>
         </geometry>
@@ -235,7 +235,7 @@
       <collision>
         <origin
           xyz="0 0 0"
-          rpy="1.57 0.0 1.57" />
+          rpy="${M_PI/2} 0.0 ${M_PI/2}" />
         <geometry>
           <mesh
             filename="package://scout_description/meshes/double-camera-mynt1.STL" />
@@ -339,7 +339,7 @@
     <joint name="depth_camera_optical_joint" type="fixed">
       <parent link="depth_camera_link" />
       <child link="depth_camera_optical_link" />
-      <origin xyz="0 0 0" rpy="1.57 3.14 1.57"/>      
+      <origin xyz="0 0 0" rpy="${M_PI/2} ${M_PI} ${M_PI/2}"/>      
     </joint>
 
     <!-- SUBOT DEPTH CAMERA image plugin -->  
