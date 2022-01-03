@@ -106,37 +106,30 @@
     <xacro:include filename="$(find scout_description)/urdf/scout_v2.gazebo" />
 
     <!-- SENSORS AND INCLUDES ================================================ -->
-    <!-- SUBOT WORLD -->
+
+    <!-- WORLD -->
     <!-- <link name="world" />
-    <joint name="world_to_base_link=" type="planar">
-        <origin xyz="0 0 0.1" rpy="0 0 0" />
+    <joint name="world_to_base_link=" type="fixed">
+        <origin xyz="0 0 0.3" rpy="0 0 0" />
         <parent link="world"/>
         <child link="base_link"/>
     </joint> -->
 
-    <!-- SUBOT VLP16 include -->
+    <!-- VLP16 include -->
     <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
     <xacro:VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
         <origin xyz="0 0 0.2" rpy="0 0 0" />
     </xacro:VLP-16>
 
-    <!-- SUBOT IMU frame and joint -->
+    <!-- IMU frame and joint -->
     <link name="imu_link"/>   
     <joint name="imu_joint" type="fixed">
         <parent link="base_link"/>
         <child link="imu_link"/>
-        <origin xyz="0.0 0 0.068" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <!-- <gazebo reference="imu_link">
-        <sensor type="imu" name="imu">
-        <always_on>true</always_on>
-        <visualize>$(arg imu_visual)</visualize>
-        </sensor>
-        <material>Gazebo/Grey</material>
-    </gazebo> -->
-
-    <!-- SUBOT IMU plugin -->
+    <!-- IMU plugin -->
     <gazebo>
         <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
         <alwaysOn>true</alwaysOn>
@@ -166,7 +159,7 @@
         </plugin>
     </gazebo>
 
-    <!-- SUBOT RGB CAMERA (DISABLE) -->
+    <!-- RGB CAMERA (DISABLE) -->
     <!-- <link name="camera_link"/>   
     <joint name="camera_joint" type="fixed">
         <parent link="base_link"/>
@@ -208,7 +201,7 @@
         </sensor>
     </gazebo>    -->
 
-    <!-- SUBOT STEREO CAMERA  frames and joints -->
+    <!-- STEREO CAMERA  frames and joints -->
     <link name="stereo_camera_link">
       <inertial>
         <origin
@@ -263,7 +256,7 @@
       <origin xyz="0.04 -0.06 0" rpy="0 0 0"/>
     </joint>
 
-    <!-- SUBOT STEREO CAMERA image plugin -->
+    <!-- STEREO CAMERA image plugin -->
     <gazebo reference="left_stereo_camera_link">
       <sensor type="multicamera" name="stereo_camera">
         <update_rate>30.0</update_rate>
@@ -326,7 +319,7 @@
       </sensor>
     </gazebo>
 
-    <!-- SUBOT DEPTH CAMERA link and joint  -->
+    <!-- DEPTH CAMERA link and joint  -->
     <link name="depth_camera_link"/>
     <joint name="depth_camera_joint" type="fixed">
       <parent link="stereo_camera_link" />
@@ -334,7 +327,7 @@
       <origin xyz="0.04 0 0" rpy="0 0 0"/>
     </joint>  
 
-    <!-- SUBOT DEPTH CAMERA optical frame -->
+    <!-- DEPTH CAMERA optical frame -->
     <link name="depth_camera_optical_link"/>
     <joint name="depth_camera_optical_joint" type="fixed">
       <parent link="depth_camera_link" />
@@ -342,7 +335,7 @@
       <origin xyz="0 0 0" rpy="${M_PI/2} ${M_PI} ${M_PI/2}"/>      
     </joint>
 
-    <!-- SUBOT DEPTH CAMERA image plugin -->  
+    <!-- DEPTH CAMERA image plugin -->  
     <gazebo reference="depth_camera_link">
       <sensor name="depth_camera" type="depth">
         <update_rate>20</update_rate>
@@ -385,7 +378,7 @@
       </sensor>
     </gazebo>  
 
-    <!-- SUBOT GPS -->
+    <!-- GPS -->
     <link name="gps_link" />
     <joint name="gps_joint" type="fixed">
         <parent link="base_link" />
@@ -407,7 +400,7 @@
       </plugin>
     </gazebo>
 
-    <!-- SUBOT ODOMETRY -->
+    <!-- ODOMETRY -->
     <gazebo>
       <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <alwaysOn>true</alwaysOn>
@@ -415,7 +408,7 @@
         <bodyName>base_link</bodyName>
         <topicName>odom</topicName>
         <gaussianNoise>0.01</gaussianNoise>
-        <frameName>world</frameName>
+        <frameName>map</frameName>
         <xyzOffsets>0 0 0</xyzOffsets>
         <rpyOffsets>0 0 0</rpyOffsets>
       </plugin>
