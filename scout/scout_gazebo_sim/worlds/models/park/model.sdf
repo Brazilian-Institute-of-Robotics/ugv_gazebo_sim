@@ -1,0 +1,38 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='park'>
+    <link name='park_link'>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+      <enable_wind>0</enable_wind>
+      <colision name='park_colision'>
+        <geometry>
+          <mesh>
+            <uri>file://park/meshes/bir_park.dae</uri>
+          </mesh>
+        </geometry>
+      </colision>
+      <pose>0 0 0 0 -0 0</pose>
+      <visual name='park_visual'>
+        <geometry>
+          <mesh>
+            <uri>file://park/meshes/bir_park.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <shader type='pixel'/>
+        </material>
+        <pose>0 0 0 0 -0 0</pose>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+    </link>
+    <static>1</static>
+    <allow_auto_disable>1</allow_auto_disable>
+  </model>
+</sdf>

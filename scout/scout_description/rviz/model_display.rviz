@@ -7,7 +7,8 @@ Panels:
         - /Global Options1
         - /Status1
         - /Depth camera1/Auto Size1
-      Splitter Ratio: 0.6294117569923401
+        - /Imu1/Status1
+      Splitter Ratio: 0.6308139562606812
     Tree Height: 403
   - Class: rviz/Selection
     Name: Selection
@@ -380,13 +381,13 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz_plugin_tutorials/Imu
       Color: 204; 51; 204
-      Enabled: true
+      Enabled: false
       History Length: 1
       Name: Imu
       Queue Size: 10
       Topic: /imu
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.10000000149011612
       Class: rviz/Odometry
       Covariance:
@@ -460,7 +461,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.228402614593506
+      Distance: 7.758607864379883
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -476,9 +477,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2997969090938568
+      Pitch: 0.32479679584503174
       Target Frame: <Fixed Frame>
-      Yaw: 2.230811595916748
+      Yaw: 1.5358097553253174
     Saved: ~
 Window Geometry:
   Depth image raw:
