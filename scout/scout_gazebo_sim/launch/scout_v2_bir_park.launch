@@ -2,7 +2,6 @@
 
 <launch>
   <arg name="robot_namespace" default="/"/>
-  <!-- <arg name="world" default="$(find scout_gazebo_sim)/worlds/bir_park.world"/> -->
   <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find scout_gazebo_sim)/worlds/models"/>
   <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find scout_gazebo_sim)/worlds/models"/> 
 

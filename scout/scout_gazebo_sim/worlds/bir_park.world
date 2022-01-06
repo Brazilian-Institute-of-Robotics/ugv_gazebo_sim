@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.4">
   <world name="default">
-    <!-- <light name='sun' type='directional'>
+    <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
       <pose>0 0 10 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
@@ -13,9 +13,9 @@
         <quadratic>0.001</quadratic>
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
-    </light> -->
+    </light>
 
-    <!-- <model name='ground_plane'>
+    <model name='ground_plane'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -62,24 +62,11 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-    </model>  -->
-
-    <!-- <include>
-      <name>bus</name>
-      <uri>model://bus</uri>
-      <pose frame=''>2 1 0 0 0 0</pose>
-    </include> -->
-
-    <include>
-      <uri>model://sun</uri>
-    </include>
-
-    <include>
-      <uri>model://ground_plane</uri>
-    </include>
+    </model> 
 
     <include>
       <uri>model://park</uri>
+      <pose>0 0 0.55 0 0 0</pose>
     </include>
 
     <physics type='ode'>
@@ -94,32 +81,6 @@
       <background>0.7 0.7 0.7 1</background>
       <shadows>1</shadows>
     </scene>
-
-    <!-- <model name='park'>      
-      <static>1</static>
-      <link name='park_link'>
-        <visual name='park_visual'>
-          <geometry>
-            <mesh><uri>file://models/bir_park.dae</uri></mesh>
-          </geometry>
-        </visual>
-
-        <colision name="park_colision">
-          <geometry>
-            <mesh><uri>file://models/bir_park.dae</uri></mesh>
-          </geometry>
-        </colision> 
-
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>       
-      </link>
-      <pose>0 0 0.55 0 0 0 </pose>
-    </model>   -->
 
     <gui fullscreen='0'>
       <camera name='user_camera'>

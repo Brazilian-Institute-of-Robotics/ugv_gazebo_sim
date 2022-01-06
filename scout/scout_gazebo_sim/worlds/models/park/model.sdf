@@ -1,38 +1,56 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
   <model name='park'>
+    <static>true</static>   
     <link name='park_link'>
       <velocity_decay>
         <linear>0</linear>
         <angular>0</angular>
       </velocity_decay>
+
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <gravity>1</gravity>
       <enable_wind>0</enable_wind>
-      <colision name='park_colision'>
-        <geometry>
-          <mesh>
-            <uri>file://park/meshes/bir_park.dae</uri>
-          </mesh>
-        </geometry>
-      </colision>
-      <pose>0 0 0 0 -0 0</pose>
+
+      <inertial>
+        <mass>1067378.53101861</mass>
+        <inertia>
+          <ixx>26067117.17572724</ixx>
+          <ixy>-1494.89502312</ixy>
+          <ixz>180787.25167944</ixz>
+          <iyy>33004921.99612056</iyy>
+          <iyz>78.27570635</iyz>
+          <izz>58831850.58800142</izz>
+        </inertia>  
+      </inertial>
+
       <visual name='park_visual'>
         <geometry>
           <mesh>
             <uri>file://park/meshes/bir_park.dae</uri>
           </mesh>
         </geometry>
+
         <material>
           <shader type='pixel'/>
         </material>
+
         <pose>0 0 0 0 -0 0</pose>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
       </visual>
+
+      <collision name='park_collision'>
+        <geometry>
+          <mesh>
+            <uri>file://park/meshes/bir_park.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+
     </link>
-    <static>1</static>
+
     <allow_auto_disable>1</allow_auto_disable>
   </model>
 </sdf>
