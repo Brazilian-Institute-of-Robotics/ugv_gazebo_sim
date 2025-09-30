@@ -1,0 +1,28 @@
+slam_toolbox:
+  ros__parameters:
+    use_sim_time: true
+
+    # Frames e tópicos
+    map_frame: map
+    odom_frame: odom
+    base_frame: base_footprint
+    scan_topic: /lidar_2d
+
+    # Publicação do TF map->odom (padrão do slam_toolbox é publicar)
+    publish_tf: true
+    provide_odom_frame: false   # deixe 'false' se você já tem odometria odom->base_link
+
+    # Resolução do mapa gerado
+    resolution: 0.05
+    minimum_travel_distance: 0.1
+    minimum_travel_heading: 0.17
+
+    # Ajustes comuns em simulação
+    transform_publish_period: 0.05
+    map_update_interval: 1.0
+    max_laser_range: 30.0
+    min_laser_range: 0.05
+
+    # (opcionais) estabilidade/loop closure
+    loop_search_maximum_distance: 3.0
+    do_loop_closing: true

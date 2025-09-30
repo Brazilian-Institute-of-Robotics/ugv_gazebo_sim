@@ -6,10 +6,19 @@
 
 <robot name="hunter2" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<xacro:include filename="$(find hunter2_gazebo)/xacro/hunter2.gazebo"/> 
+<xacro:include filename="$(find hunter2_gazebo)/xacro/hunter2.gazebo"/>
+<xacro:include filename="$(find hunter2_gazebo)/xacro/hunter2sensor.gazebo"/>
 
-  <link
-    name="base_link">
+  <link name="base_footprint">
+  </link>
+  
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <origin xyz="0 0 0.33158" rpy="0 0 0" />
+    <parent link="base_footprint" />
+    <child link="base_link" />
+  </joint>
+
+  <link name="base_link">
     <inertial>
       <origin
         xyz="0.0266989327622036 0.000409203500587652 -0.135901124750884"
@@ -33,9 +42,7 @@
           filename="file://$(find hunter2_base)/meshes/base_link.STL" />
       </geometry>
       <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+        name="offwhite">
       </material>
     </visual>
     <collision>
@@ -48,6 +55,7 @@
       </geometry>
     </collision>
   </link>
+
   <link
     name="front_steer_left_link">
     <inertial>
@@ -72,9 +80,7 @@
         <box size="0.001 0.001 0.001"/>
       </geometry>
       <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
+        name="mediumgrey">
       </material>
     </visual>
     <collision>
@@ -129,9 +135,7 @@
           filename="file://$(find hunter2_base)/meshes/front_left_wheel_link.STL" />
       </geometry>
       <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
+        name="battleshipgrey">
       </material>
     </visual>
     <collision>
@@ -182,9 +186,7 @@
         <box size="0.001 0.001 0.001"/>
       </geometry>
       <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
+        name="battleshipgrey">
       </material>
     </visual>
     <collision>
@@ -239,9 +241,7 @@
           filename="file://$(find hunter2_base)/meshes/front_left_wheel_link.STL" />
       </geometry>
       <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
+        name="battleshipgrey">
       </material>
     </visual>
     <collision>
@@ -294,9 +294,7 @@
           filename="file://$(find hunter2_base)/meshes/left_rear_link.STL" />
       </geometry>
       <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
+        name="battleshipgrey">
       </material>
     </visual>
     <collision>
@@ -349,9 +347,7 @@
           filename="file://$(find hunter2_base)/meshes/right_rear_link.STL" />
       </geometry>
       <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
+        name="battleshipgrey">
       </material>
     </visual>
     <collision>
@@ -523,5 +519,121 @@
   <xacro:wheel_transmission name="rear_left" />
   <xacro:wheel_transmission name="rear_right" />
 
+  <!-- ================== IMU ================== -->
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.05"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" iyy="1e-6" izz="1e-6" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="0.02 0.02 0.02"/></geometry>
+      <material name="imu_green"><color rgba="0.2 0.8 0.2 1.0"/></material>
+    </visual>
+  </link>
 
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <!-- posicione a IMU no chassis -->
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ================== LiDAR 3D ================== -->
+<link name="lidar_link">
+  <inertial>
+    <mass value="0.3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <inertia ixx="1e-4" iyy="1e-4" izz="1e-4" ixy="0" ixz="0" iyz="0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry><cylinder radius="0.05" length="0.06"/></geometry>
+    <material name="lidar_black"><color rgba="0.1 0.1 0.1 1.0"/></material>
+  </visual>
+</link>
+
+  <!-- ================== LiDAR 2D ================== -->
+
+<joint name="lidar_2d_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="lidar_2d_link"/>
+  <origin xyz="0.55 0 -0.10" rpy="0 0 0"/>
+</joint>
+
+<link name="lidar_2d_link">
+  <inertial>
+    <mass value="0.3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <inertia ixx="1e-4" iyy="1e-4" izz="1e-4" ixy="0" ixz="0" iyz="0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry><cylinder radius="0.05" length="0.06"/></geometry>
+    <material name="lidar_black"><color rgba="0.1 0.1 0.1 1.0"/></material>
+  </visual>
+</link>
+
+<joint name="lidar_joint" type="fixed">
+  <parent link="base_link"/>
+  <!-- coloque o LiDAR no “teto”/frente -->
+  <child link="lidar_link"/>
+  <origin xyz="0.0 0 0.35" rpy="0 0 0"/>
+</joint>
+
+<ros2_control name="GazeboSimSystem" type="system">
+  <hardware>
+    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+  </hardware>
+
+  <!-- Rodas dianteiras (vamos expor comando em VELOCIDADE) -->
+  <joint name="front_left_wheel_joint">
+ 
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+  </joint>
+
+  <joint name="front_right_wheel_joint">
+
+ 
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+
+  </joint>
+
+  <!-- Rodas traseiras -->
+  <joint name="rear_left_joint">
+
+ 
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+
+  </joint>
+
+  <joint name="rear_right_joint">
+
+ 
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+
+  </joint>
+
+  <!-- Esterço (faz sentido “position” como comando) -->
+  <joint name="front_steer_left_joint">
+
+
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+
+  </joint>
+
+  <joint name="front_steer_right_joint">
+
+
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+
+  </joint>
+</ros2_control>
 </robot>

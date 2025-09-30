@@ -48,50 +48,45 @@
 </gazebo>
 
 <gazebo>
+  <!-- Plugin Ackermann do Gazebo Sim (Fortress) -->
+  <plugin
+    filename="libignition-gazebo-ackermann-steering-system.so"
+    name="ignition::gazebo::systems::AckermannSteering">
 
-    <plugin name="gazebo_ros_ackermann_drive" filename="libgazebo_ros_ackermann_drive.so">
+    <!-- Rodas de tração (esquerda/direita). Se só as traseiras tracionam, liste só elas -->
+    <left_joint>re_left_joint</left_joint>
+    <right_joint>re_right_joint</right_joint>
 
-      <ros>
-        <remapping>cmd_vel:=cmd_vel</remapping>
-        <remapping>odom:=odom</remapping>
-        <remapping>distance:=distance</remapping>
-      </ros>
-      <update_rate>100.0</update_rate>
+    <!-- Juntas de esterço (dianteiras) -->
+    <left_steering_joint>fr_steer_left_joint</left_steering_joint>
+    <right_steering_joint>fr_steer_right_joint</right_steering_joint>
 
-      <front_left_joint>fr_left_joint</front_left_joint>
-      <front_right_joint>fr_right_joint</front_right_joint>
-      <rear_left_joint>re_left_joint</rear_left_joint>
-      <rear_right_joint>re_right_joint</rear_right_joint>
-      <left_steering_joint>fr_steer_left_joint</left_steering_joint>
-      <right_steering_joint>fr_steer_right_joint</right_steering_joint>
-      <steering_wheel_joint>front_steer_joint</steering_wheel_joint>
+    <!-- Geometria / limites (ajuste para o seu veículo) -->
+    <wheel_base>1.0</wheel_base>          <!-- distância entre eixos [m] -->
+    <wheel_separation>0.8</wheel_separation>  <!-- bitola [m] -->
+    <wheel_radius>0.16</wheel_radius>      <!-- raio da roda [m] -->
+    <steering_limit>0.6458</steering_limit> <!-- limite em rad (≈ seu max_steer) -->
 
-      <max_steer>0.6458</max_steer>
+    <!-- Tópicos nativos do Gazebo Sim (Ignition Transport) -->
+    <!-- Dica: já deixe como /cmd_vel e /odom para casar com a ponte -->
+    <topic>/cmd_vel</topic>
+    <odom_topic>/odom</odom_topic>
+    <tf_topic>/tf</tf_topic>
 
-      <max_steering_angle>7.85</max_steering_angle>
+    <!-- Frames para a odometria publicada pelo plugin -->
+    <frame_id>odom</frame_id>
+    <child_frame_id>base_link</child_frame_id>
 
-      <max_speed>20</max_speed>
-
-      <left_steering_pid_gain>1500 0 1</left_steering_pid_gain>
-      <left_steering_i_range>0 0</left_steering_i_range>
-      <right_steering_pid_gain>1500 0 1</right_steering_pid_gain>
-      <right_steering_i_range>0 0</right_steering_i_range>
-      <linear_velocity_pid_gain>1000 0 1</linear_velocity_pid_gain>
-      <linear_velocity_i_range>0 0</linear_velocity_i_range>
-
-      <publish_odom>true</publish_odom>
-      <publish_odom_tf>true</publish_odom_tf>
-      <publish_wheel_tf>true</publish_wheel_tf>
-      <publish_distance>true</publish_distance>
-
-      <odometry_frame>odom</odometry_frame>
-      <robot_base_frame>base_link</robot_base_frame>
-
-    </plugin>
-
-
+    <!-- (opcionais) limites dinâmicos -->
+    <!--
+    <odom_publish_frequency>50</odom_publish_frequency>
+    <min_velocity>-5.0</min_velocity>
+    <max_velocity> 5.0</max_velocity>
+    <min_acceleration>-10.0</min_acceleration>
+    <max_acceleration> 10.0</max_acceleration>
+    -->
+  </plugin>
 </gazebo>
-
 
 
 
