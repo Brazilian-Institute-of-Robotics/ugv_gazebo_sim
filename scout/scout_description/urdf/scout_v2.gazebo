@@ -10,6 +10,7 @@ Reference:
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:include filename="$(find scout_description)/urdf/scout_wheel.gazebo" />
+    <xacro:include filename="$(find scout_gazebo_sim)/urdf/scout_v2sensor.gazebo" />
 
     <!-- Additional definitions for simulation -->
     <!-- <gazebo reference="base_link">
@@ -125,40 +126,39 @@ Reference:
         </plugin>
     </gazebo> -->
 
-  <gazebo>
-    <plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
-          <ros>
-            <namespace>/</namespace>
-            <remapping>cmd_vel:=cmd_vel</remapping>
-            <remapping>odom:=odom</remapping>
-          </ros>
 
-          <update_rate>30</update_rate>
-          <num_wheel_pairs>2</num_wheel_pairs>
+<gazebo>
+    <!-- Gazebo Sim (Fortress) - Differential Drive -->
+    <plugin
+        filename="libignition-gazebo-diff-drive-system.so"
+        name="ignition::gazebo::systems::DiffDrive">
 
-          <left_joint>front_left_wheel</left_joint>
-          <right_joint>front_right_wheel</right_joint>
-          <left_joint>rear_left_wheel</left_joint>
-          <right_joint>rear_right_wheel</right_joint>
+        <!-- Juntas tracionadas (pode repetir; 2 pares) -->
+        <left_joint>front_left_wheel</left_joint>
+        <left_joint>rear_left_wheel</left_joint>
+        <right_joint>front_right_wheel</right_joint>
+        <right_joint>rear_right_wheel</right_joint>
 
+        <!-- Geometria (use RAIO, não diâmetro) -->
+        <wheel_separation>0.451</wheel_separation>
+        <wheel_radius>0.04</wheel_radius>  <!-- 0.08 / 2 -->
 
+        <!-- Tópicos / frames em Ignition Transport -->
+        <topic>/cmd_vel</topic>          <!-- Twist (via ponte) -->
+        <odom_topic>/odom</odom_topic>   <!-- Odometry out -->
+        <tf_topic>/tf</tf_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>base_footprint</child_frame_id>
 
-          <wheel_separation>0.451</wheel_separation>
-          <wheel_separation>0.451</wheel_separation>
+        <!-- Frequência de publicação (Hz) -->
+        <odom_publish_frequency>30</odom_publish_frequency>
 
-          <wheel_diameter>0.08</wheel_diameter>
-          <wheel_diameter>0.08</wheel_diameter>
+        <max_linear_velocity>3.0</max_linear_velocity>
+        <max_angular_velocity>2.0</max_angular_velocity>
+        <max_linear_acceleration>5.0</max_linear_acceleration>
+        <max_angular_acceleration>5.0</max_angular_acceleration>
 
+    </plugin>
+  </gazebo>
 
-          <max_wheel_torque>1000</max_wheel_torque>
-          <max_wheel_acceleration>1.0</max_wheel_acceleration>
-          <publish_odom>true</publish_odom>
-          <publish_odom_tf>true</publish_odom_tf>
-          <publish_wheel_tf>true</publish_wheel_tf>
-          <odometry_frame>odom</odometry_frame>
-          <robot_base_frame>base_link</robot_base_frame>
-      </plugin>
-    </gazebo> 
-
-    
 </robot>

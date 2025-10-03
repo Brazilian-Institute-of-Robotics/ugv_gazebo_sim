@@ -9,7 +9,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
 
     gazebo_world_path = os.path.join(
-        get_package_share_directory('scout_gazebo_sim'), 'world', 'house.world')
+        get_package_share_directory('scout_gazebo_sim'), 'worlds', 'electrical_substation_v3.world')
+    
+    gz_pkg_share = get_package_share_directory('scout_gazebo_sim')
 
     gazebo_options_dict = {
         'world': gazebo_world_path,
@@ -18,16 +20,29 @@ def generate_launch_description():
 
     gazebo_simulator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
+            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ]),
-        launch_arguments=gazebo_options_dict.items()
+        launch_arguments={'gz_args': ['-r -v4 ', gazebo_world_path], 'on_exit_shutdown': 'true'}.items()
+    )
+    
+    display = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(gz_pkg_share, 'launch', 'display.launch.py')
+        ),
+        launch_arguments={'gui': 'true'}.items()
+    )
+    
+    bridge = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(gz_pkg_share, 'launch', 'gz_bridge.launch.py')
+        )
     )
 
     car_sim_options = {
-        'start_x': '0',
-        'start_y': '0',
-        'start_z': '0',
-        'start_yaw': '0',
+        'start_x': '11',
+        'start_y': '36',
+        'start_z': '0.0',
+        'start_yaw': '-1.57',
         'pub_tf': 'true',
         'tf_freq': '100.0',
         'blue': 'false'
@@ -45,4 +60,6 @@ def generate_launch_description():
     return LaunchDescription([
         gazebo_simulator,
         spawn_car,
+        #bridge,
+        #display,
     ])

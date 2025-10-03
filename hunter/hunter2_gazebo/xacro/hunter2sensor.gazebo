@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <robot name="hunter2" xmlns:xacro="http://www.ros.org/wiki/xacro">
 <gazebo reference="lidar_2d_link">
     <sensor name="gpu_lidar" type="gpu_lidar">

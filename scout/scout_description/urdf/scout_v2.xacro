@@ -24,6 +24,15 @@
     <xacro:property name="wheel_length" value="1.1653e-01" />
     <xacro:property name="wheel_radius" value="1.6459e-01" />
 
+    <link name="base_footprint">
+    </link>
+    
+    <joint name="base_footprint_to_base_link" type="fixed">
+        <origin xyz="0 0 0.23" rpy="0 0 0" />
+        <parent link="base_footprint" />
+        <child link="base_link" />
+    </joint>
+
     <!-- Base link -->
     <link name="base_link">
         <visual>
@@ -68,6 +77,75 @@
         <parent link="base_link" />
         <child link="inertial_link" />
     </joint>
+
+     <!-- ================== IMU ================== -->
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.05"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+      <material name="imu_green">
+        <color rgba="0.2 0.8 0.2 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <!-- posicione a IMU no chassis -->
+    <child link="imu_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.1"/>
+  </joint>
+  <!-- ================== LiDAR 3D ================== -->
+  <link name="lidar_3d_link">
+    <inertial>
+      <mass value="0.3"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.06" radius="0.05"/>
+      </geometry>
+      <material name="lidar_black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="lidar_3d_joint" type="fixed">
+    <parent link="base_link"/>
+    <!-- posicione a IMU no chassis -->
+    <child link="lidar_3d_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.25"/>
+  </joint>
+  <!-- ================== LiDAR 2D ================== -->
+  <link name="lidar_2d_link">
+    <inertial>
+      <mass value="0.3"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.06" radius="0.05"/>
+      </geometry>
+      <material name="lidar_black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="lidar_2d_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_2d_link"/>
+    <origin rpy="0 0 0" xyz="0.55 0 -0.10"/>
+  </joint>
 
     <!-- For testing, hang the robot up in the air -->
     <!-- <link name="world" />

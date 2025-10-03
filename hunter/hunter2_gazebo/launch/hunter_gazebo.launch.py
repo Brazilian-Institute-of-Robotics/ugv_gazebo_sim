@@ -9,6 +9,8 @@ def generate_launch_description():
 
     gazebo_world_path = os.path.join(
         get_package_share_directory('hunter2_gazebo'), 'world', 'electrical_substation_v3.world')
+    
+    gz_pkg_share = get_package_share_directory('hunter2_gazebo')
 
     gazebo_options_dict = {
         'world': gazebo_world_path,
@@ -33,6 +35,14 @@ def generate_launch_description():
         'tf_freq': '100.0',
         'blue': 'false'
     }
+    
+
+    display = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(gz_pkg_share, 'launch', 'display.launch.py')
+        ),
+        launch_arguments={'gui': 'true'}.items()
+    )
 
     spawn_car = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -42,6 +52,12 @@ def generate_launch_description():
         ]),
         launch_arguments=car_sim_options.items()
     )
+    
+    bridge = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(gz_pkg_share, 'launch', 'gz_bridge.launch.py')
+        )
+    )
 
 
 
@@ -49,4 +65,6 @@ def generate_launch_description():
     return LaunchDescription([
         gazebo_simulator,
         spawn_car,
+        bridge,
+        display,
     ])
