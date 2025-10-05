@@ -88,7 +88,6 @@ def generate_launch_description():
 
     return LaunchDescription([
         declare_log,
-        #display,
         bridge,
         map_server,
         amcl,

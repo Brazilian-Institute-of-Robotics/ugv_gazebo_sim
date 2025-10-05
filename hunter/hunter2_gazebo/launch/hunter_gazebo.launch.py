@@ -66,5 +66,4 @@ def generate_launch_description():
         gazebo_simulator,
         spawn_car,
         bridge,
-        display,
     ])
