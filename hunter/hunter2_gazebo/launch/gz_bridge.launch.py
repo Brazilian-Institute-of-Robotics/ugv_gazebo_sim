@@ -1,6 +1,6 @@
 # hunter2_gazebo/launch/gz_bridge.launch.py
 from launch import LaunchDescription
-from launch_ros.actions import Node
+from launch_ros.actions import Node, SetParameter
 
 def generate_launch_description():
     bridges = [
@@ -23,6 +23,7 @@ def generate_launch_description():
     ]
 
     return LaunchDescription([
+        SetParameter(name='use_sim_time', value=True),
         Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
