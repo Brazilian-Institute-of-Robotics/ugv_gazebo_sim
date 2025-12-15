@@ -55,7 +55,6 @@ def generate_launch_description():
         model_arg,
         rviz_arg,
         joint_state_publisher_node,
-        joint_state_publisher_gui_node,
         robot_state_publisher_node,
         rviz_node
     ])
