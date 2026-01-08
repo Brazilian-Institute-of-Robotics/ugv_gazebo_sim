@@ -76,17 +76,6 @@ def generate_launch_description():
         output="screen",
         arguments=["joint_state_broadcaster"],)
     
-        # === robot_localization (EKF) ===
-    ekf_yaml = os.path.join(gz_pkg_share, 'config', 'ekf_localization.yaml')
-    ekf_node = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
-        output='screen',
-        parameters=[ekf_yaml, {'use_sim_time': True}],
-        # Se quiser mudar o tópico de saída:
-        # remappings=[('odometry/filtered', 'odom/filtered')],
-    )
 
     return LaunchDescription([
         start_x, start_y, start_z, start_yaw, robot_name,
@@ -94,5 +83,4 @@ def generate_launch_description():
         state_pub,
         spawn_entity,
         jsb_spawner,
-        ekf_node,
     ])

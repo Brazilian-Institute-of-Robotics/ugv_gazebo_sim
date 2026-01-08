@@ -19,6 +19,9 @@ def generate_launch_description():
                                       description='Absolute path to robot urdf file')
     rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
                                      description='Absolute path to rviz config file')
+    
+    use_sim_time = DeclareLaunchArgument("use_sim_time", default_value="true")
+
 
     robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration('model')]),
                                        value_type=str)
@@ -48,9 +51,13 @@ def generate_launch_description():
         name='rviz2',
         output='screen',
         arguments=['-d', LaunchConfiguration('rvizconfig')],
+        parameters=[{
+            'use_sim_time': LaunchConfiguration('use_sim_time')
+        }],
     )
 
     return LaunchDescription([
+        use_sim_time,
         gui_arg,
         model_arg,
         rviz_arg,

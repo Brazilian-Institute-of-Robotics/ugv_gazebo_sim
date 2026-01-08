@@ -15,7 +15,6 @@ def generate_launch_description():
     pkg_share = FindPackageShare(package='scout_description').find('scout_description')
     gz_share = FindPackageShare(package='scout_gazebo_sim').find('scout_gazebo_sim')
     urdf_file = os.path.join(pkg_share, 'urdf/scout_v2.xacro')
-    ekf_yaml = os.path.join(gz_share, 'config', 'ekf_localization.yaml')
 
     SetEnvironmentVariable('GAZEBO_MODEL_PATH', pkg_share)
 
@@ -35,15 +34,12 @@ def generate_launch_description():
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            # parameters=[{
-            #     'use_sim_time': True,
-            #     'robot_description': Command(
-            #         [f'xacro {urdf_file}', ' robot_name:=', LaunchConfiguration('robot_name')])
             parameters=[{
                 'use_sim_time': True,
                 'robot_description': launch_ros.descriptions.ParameterValue( launch.substitutions.Command([
                         'xacro ',os.path.join(pkg_share,urdf_file)]), value_type=str)  }]
             ),
+        
         Node(
             package='ros_gz_sim',
             executable='create',
@@ -57,13 +53,11 @@ def generate_launch_description():
                 '-timeout', '1000'
             ],
             output='screen'),
+        
+        
         Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
-        output='screen',
-        parameters=[ekf_yaml, {'use_sim_time': True}],
-        # Se quiser mudar o tópico de saída:
-        # remappings=[('odometry/filtered', 'odom/filtered')],
-            )
+        package="controller_manager",
+        executable="spawner",
+        output="screen",
+        arguments=["joint_state_broadcaster", "skid_drive_controller" ],)
     ])

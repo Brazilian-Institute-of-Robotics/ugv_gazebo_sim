@@ -25,6 +25,11 @@
     <xacro:property name="wheel_radius" value="1.6459e-01" />
 
     <link name="base_footprint">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+      </inertial>
     </link>
     
     <joint name="base_footprint_to_base_link" type="fixed">
@@ -145,6 +150,23 @@
     <parent link="base_link"/>
     <child link="lidar_2d_link"/>
     <origin rpy="0 0 0" xyz="0.55 0 -0.10"/>
+  </joint>
+
+  <link name="camera_rgbd_link"/>
+  <joint name="camera_rgbd_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_rgbd_link"/>
+    <!-- ajuste a pose na frente do robô -->
+    <origin xyz="0.35 0.0 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <link name="camera_rgbd_optical_frame"/>
+
+  <joint name="camera_rgbd_optical_joint" type="fixed">
+    <parent link="camera_rgbd_link"/>
+    <child link="camera_rgbd_optical_frame"/>
+    <!-- rotação para virar optical frame (REP-103) -->
+    <origin xyz="0 0 0" rpy="-1.57079632679 0 -1.57079632679"/>
   </joint>
 
     <!-- For testing, hang the robot up in the air -->

@@ -12,12 +12,7 @@ def generate_launch_description():
         get_package_share_directory('scout_gazebo_sim'), 'worlds', 'electrical_substation_v3.world')
     
     gz_pkg_share = get_package_share_directory('scout_gazebo_sim')
-
-    gazebo_options_dict = {
-        'world': gazebo_world_path,
-        'verbose': 'true'
-    }
-
+    
     gazebo_simulator = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
@@ -25,12 +20,12 @@ def generate_launch_description():
         launch_arguments={'gz_args': ['-r -v4 ', gazebo_world_path], 'on_exit_shutdown': 'true'}.items()
     )
     
-    display = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(gz_pkg_share, 'launch', 'display.launch.py')
-        ),
-        launch_arguments={'gui': 'true'}.items()
-    )
+    # display = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(gz_pkg_share, 'launch', 'display.launch.py')
+    #     ),
+    #     launch_arguments={'gui': 'true'}.items()
+    # )
     
     bridge = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -60,6 +55,5 @@ def generate_launch_description():
     return LaunchDescription([
         gazebo_simulator,
         spawn_car,
-        #bridge,
-        #display,
+        bridge,
     ])

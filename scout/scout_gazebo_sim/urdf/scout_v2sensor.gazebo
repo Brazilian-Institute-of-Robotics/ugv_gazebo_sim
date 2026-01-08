@@ -8,9 +8,57 @@
       name="ignition::gazebo::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
+    
     <plugin filename="ignition-gazebo-imu-system"
             name="gz::sim::systems::Imu"/>
+    
+    <plugin filename="ignition-gazebo-altimeter-system"
+            name="ignition::gazebo::systems::Altimeter"/>
   </gazebo>
+  
+
+<gazebo reference="camera_rgbd_link">
+  <sensor name="rgbd_camera" type="rgbd_camera">
+    <pose relative_to="camera_rgbd_link">0 0 0 0 0 0</pose>
+
+    <!-- Tópicos (Ignition/GZ) -->
+    <topic>/camera</topic>
+
+    <update_rate>15</update_rate>
+    <always_on>true</always_on>
+    <visualize>true</visualize>
+
+    <!-- IDs -->
+    <frame_id>camera_rgbd_link</frame_id>
+    <ign_frame_id>camera_rgbd_link</ign_frame_id>
+    <gz_frame_id>camera_rgbd_link</gz_frame_id>
+
+    <camera>
+      <horizontal_fov>1.047</horizontal_fov> <!-- ~60 deg -->
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>10.0</far>
+      </clip>
+    </camera>
+
+    <depth_camera>
+      <clip>
+        <near>0.1</near>
+        <far>10.0</far>
+      </clip>
+    </depth_camera>
+
+    <!-- PointCloud -->
+    <point_cloud>
+      <enabled>true</enabled>
+    </point_cloud>
+  </sensor>
+</gazebo>
 
 <gazebo reference="lidar_2d_link">
     <sensor name="lidar2d" type="gpu_lidar">
@@ -46,7 +94,7 @@
     <sensor name="lidar_3d" type="gpu_lidar">
       <pose relative_to="lidar_3d_link">0 0 0 0 0 0</pose>
       <topic>/lidar_3d</topic>   <!-- sem "/" -->
-      <update_rate>10</update_rate>
+      <update_rate>15</update_rate>
       <ray>
         <scan>
           <horizontal>
@@ -78,6 +126,8 @@
       <topic>/imu</topic> <!-- absoluto OK -->
       <pose relative_to="imu_link">0 0 0 0 0 0</pose>
       <frame_id>imu_link</frame_id>
+      <ign_frame_id>imu_link</ign_frame_id>
+      <gz_frame_id>imu_link</gz_frame_id>
       <update_rate>200</update_rate>
       <always_on>true</always_on>
       <imu>
@@ -106,31 +156,65 @@
   </gazebo>
 
   <ros2_control name="GazeboSimSystem" type="system">
-  <hardware>
-    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-  </hardware>
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
 
-  <!-- Rodas (comando em VELOCIDADE) -->
-  <joint name="front_left_wheel">
-    <state_interface name="position"/>
-    <state_interface name="velocity"/>
-  </joint>
+    <!-- Rodas (comando em VELOCIDADE) -->
+    <joint name="front_left_wheel">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
 
-  <joint name="front_right_wheel">
-    <state_interface name="position"/>
-    <state_interface name="velocity"/>
-  </joint>
+    <joint name="front_right_wheel">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
 
-  <joint name="rear_left_wheel">
-    <state_interface name="position"/>
-    <state_interface name="velocity"/>
-  </joint>
+    <joint name="rear_left_wheel">
+      <command_interface name="velocity"/>    
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
 
-  <joint name="rear_right_wheel">
-    <state_interface name="position"/>
-    <state_interface name="velocity"/>
-  </joint>
-</ros2_control>
+    <joint name="rear_right_wheel">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+  <gazebo reference="front_left_wheel_link">
+    <velocityPID>
+      <p>12.0</p>
+      <i>0.0</i>
+      <d>0.25</d>
+    </velocityPID>
+  </gazebo>
 
+  <gazebo reference="front_right_wheel_link">
+    <velocityPID>
+      <p>12.0</p>
+      <i>0.0</i>
+      <d>0.25</d>
+    </velocityPID>
+  </gazebo>
+
+  <gazebo reference="rear_left_wheel_link">
+    <velocityPID>
+      <p>12.0</p>
+      <i>0.0</i>
+      <d>0.25</d>
+    </velocityPID>
+  </gazebo>
+
+  <gazebo reference="rear_right_wheel_link">
+    <velocityPID>
+      <p>12.0</p>
+      <i>0.0</i>
+      <d>0.25</d>
+    </velocityPID>
+  </gazebo>
 
 </robot>
